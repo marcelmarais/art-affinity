@@ -4,6 +4,8 @@ from PIL import Image
 from typing import List
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
+import base64
+import io
 
 class OpenClipModel:
     """
@@ -23,26 +25,32 @@ class OpenClipModel:
         self.model = self.model.to(self.device)
 
 
-    def embed_images(self, image_paths: List[str]) -> List[List[float]]:
+    def embed_images(self, images_base64: List[str]) -> List[List[float]]:
         """
-        Function to embed a list of images (paths) into a list of embeddings.
+        Function to embed a list of images (base64 encoded) into a list of embeddings.
 
-        :param image_paths: List of str. A list of paths to the images to be embedded.
+        :param images_base64: List of str. A list of base64 encoded images to be embedded.
         :return: List of List of floats. A list of embeddings for the images.
         """
         embeddings = []
-        batch_size = 512
-        # Preprocess images in parallel and process in batches
-        with ThreadPoolExecutor() as executor:
-            for i in tqdm(range(0, len(image_paths), batch_size)):
-                batch_paths = image_paths[i:i + batch_size]
-                images = list(executor.map(lambda x: self.preprocess(Image.open(x)).unsqueeze(0), batch_paths))
-                images = torch.cat(images).to(self.device)
+        batch_size = 256
+        
+        # Process images one by one and process in batches
+        for i in tqdm(range(0, len(images_base64), batch_size)):
+            batch_base64 = images_base64[i:i + batch_size]
+            images = []
+            for img_b64 in batch_base64:
+                try:
+                    img = self.preprocess(Image.open(io.BytesIO(base64.b64decode(img_b64)))).unsqueeze(0)
+                    images.append(img)
+                except Exception as e:
+                    print(f"Error decoding image: {e}")
+                    print(f"Image base64: {img_b64}")
+            images = torch.cat(images).to(self.device)
+            
+            with torch.no_grad():
+                image_features = self.model.encode_image(images)
+                normalized_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                embeddings.extend(normalized_features.cpu().numpy().tolist())
                 
-                with torch.no_grad():
-                    image_features = self.model.encode_image(images)
-                    normalized_features = image_features / image_features.norm(dim=-1, keepdim=True)
-                    embeddings.extend(normalized_features.cpu().numpy().tolist())
-                    
         return embeddings
-

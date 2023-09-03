@@ -1,5 +1,7 @@
 import pandas as pd
 import os
+import base64
+from typing import List
 from config.constants import IMAGES_SAVE_PATH, IMAGES_UPLOAD_PATH
 
 def get_image_path(id: str) -> str:
@@ -26,7 +28,7 @@ def csv_to_dict_list(csv_filename):
     df = df.dropna()
     
     # filter rows where ingested is False
-    df = df[df['ingested'] == False]
+    df = df[df['Ingested'] == True]
     
     # filter rows where image exists
     df = df[df['ID'].apply(lambda x: os.path.exists(get_image_path(x)))]
@@ -37,5 +39,20 @@ def csv_to_dict_list(csv_filename):
     data = df.to_dict('records')
     image_paths = [get_image_path(artwork_id) for artwork_id in artwork_ids]
     
-    return data, image_paths
+    return data, image_paths, list(artwork_ids)
+
+def convert_images_to_base64(image_paths: List[str]) -> List[str]:
+    """
+    Function to convert a list of image paths into a list of base64 encoded images.
+
+    :param image_paths: List of str. A list of paths to the images.
+    :return: List of str. A list of base64 encoded images.
+    """
+    images_base64 = []
+    for image_path in image_paths:
+        with open(image_path, "rb") as img_file:
+            img_str = base64.b64encode(img_file.read()).decode()
+            images_base64.append(img_str)
+    return images_base64
+
 

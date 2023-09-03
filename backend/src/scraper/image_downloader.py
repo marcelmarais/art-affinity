@@ -11,10 +11,7 @@ def download_images(csv_file, output_dir):
     # Read the CSV file
     df = pd.read_csv(csv_file)
     cnt = 0
-    LIMIT = -1
     for _, row in tqdm(df.iterrows(), total=len(df), desc="Downloading Images"):
-        if cnt == LIMIT:
-            break
         image_url = row['Image URL']
         id = row['ID']
         if pd.notna(image_url):
@@ -39,12 +36,3 @@ def download_images(csv_file, output_dir):
                                 
             except requests.exceptions.RequestException as e:
                 print(f'Error downloading {image_url}: {e}')
-        cnt +=1
-
-# Example usage
-def start_download():
-    csv_file = 'data/art_details.csv'
-    output_dir = 'data/images'
-    download_images(csv_file, output_dir)
-
-start_download()

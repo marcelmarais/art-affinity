@@ -23,7 +23,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Data
-backend/data
+data
+backend/data/images/*
 backend/database/chroma_save_files
 
 # Python

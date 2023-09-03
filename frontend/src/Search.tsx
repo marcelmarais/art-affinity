@@ -31,7 +31,7 @@ useEffect(() => {
   if (data) {
     console.log(data)
     axios.post('http://192.168.0.22:8000/query', {
-      query_texts: ["/tmp/image_uploads/" + data.filename],
+      query_texts: [data.filename],
     })
     .then(response => {
       console.log('Success:', response.data);

@@ -1,13 +1,13 @@
 from fastapi import FastAPI, Request, File, UploadFile
 from pydantic import BaseModel
 from typing import List, Optional
-from database.setup_chroma import ChromaInstance
+from database.chroma_interface import ChromaInstance
 from config.constants import DEV, IMAGES_UPLOAD_PATH
-from config.utils import setup_dirs
+from config.utils import setup_dirs, convert_images_to_base64
 import shutil
 from pathlib import Path
 import time
-
+from PIL import Image, UnidentifiedImageError
 setup_dirs()  # Create directories for image uploads
 app = FastAPI()
 
@@ -33,11 +33,11 @@ class Query(BaseModel):
 # POST route for queries
 @app.post("/query")
 async def run_query(query: Query):
+    query_texts = [str(query_text) for query_text in query.query_texts]
     results = chroma_instance.collection.query(
-        query_texts=query.query_texts,
+        query_texts=query_texts,
         n_results=query.n_results,
     )
-    print(results)
     return results
 
 # POST route for image uploads
@@ -45,10 +45,15 @@ async def run_query(query: Query):
 async def upload_image(image: UploadFile = File(...)):
     timestamp = int(time.time())
     filename = f"{timestamp}_{image.filename}"
-    image_path = Path(f"{IMAGES_UPLOAD_PATH}/{filename}")
+
+    path_str = f"{IMAGES_UPLOAD_PATH}/{filename}"
+    image_path = Path(path_str)
     with image_path.open("wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
+    
+    filename = convert_images_to_base64([path_str])[0]
     return {"filename": filename}
+
 
 
 if __name__ == "__main__":
