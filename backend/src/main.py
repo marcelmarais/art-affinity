@@ -24,10 +24,12 @@ if DEV:
     )
 
 chroma_instance = ChromaInstance()
-
-# Pydantic model for request body
 class Query(BaseModel):
     query_texts: List[str]
+    n_results: Optional[int] = 50
+
+class TextQuery(BaseModel):
+    query_text: str
     n_results: Optional[int] = 50
 
 # POST route for queries
@@ -37,6 +39,17 @@ async def run_query(query: Query):
     results = chroma_instance.collection.query(
         query_texts=query_texts,
         n_results=query.n_results,
+        include=["metadatas","distances"]
+    )
+    return results
+
+@app.post("/text-query")
+async def run_text_query(query: TextQuery):
+    text_embedding = chroma_instance.embedding_function.embed_text(query.query_text)
+    results = chroma_instance.collection.query(
+        query_embeddings=text_embedding,
+        n_results=query.n_results,
+        include=["metadatas","distances"]
     )
     return results
 

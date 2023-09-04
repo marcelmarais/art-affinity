@@ -23,6 +23,8 @@ class OpenClipModel:
             print("CUDA not found. Using CPU.")
         self.model, _, self.preprocess = open_clip.create_model_and_transforms(model_name, pretrained)
         self.model = self.model.to(self.device)
+        self.tokenizer = open_clip.get_tokenizer('ViT-B-32')
+
 
 
     def embed_images(self, images_base64: List[str]) -> List[List[float]]:
@@ -34,23 +36,26 @@ class OpenClipModel:
         """
         embeddings = []
         batch_size = 256
-        
-        # Process images one by one and process in batches
-        for i in tqdm(range(0, len(images_base64), batch_size)):
-            batch_base64 = images_base64[i:i + batch_size]
-            images = []
-            for img_b64 in batch_base64:
-                try:
-                    img = self.preprocess(Image.open(io.BytesIO(base64.b64decode(img_b64)))).unsqueeze(0)
-                    images.append(img)
-                except Exception as e:
-                    print(f"Error decoding image: {e}")
-                    print(f"Image base64: {img_b64}")
-            images = torch.cat(images).to(self.device)
-            
-            with torch.no_grad():
-                image_features = self.model.encode_image(images)
-                normalized_features = image_features / image_features.norm(dim=-1, keepdim=True)
-                embeddings.extend(normalized_features.cpu().numpy().tolist())
+        print(images_base64)
+        # Preprocess images in parallel and process in batches
+        with ThreadPoolExecutor() as executor:
+            for i in tqdm(range(0, len(images_base64), batch_size)):
+                batch_base64 = images_base64[i:i + batch_size]
+                images = list(executor.map(lambda x: self.preprocess(Image.open(io.BytesIO(base64.b64decode(x)))).unsqueeze(0), batch_base64))
+                images = torch.cat(images).to(self.device)
                 
+                with torch.no_grad():
+                    image_features = self.model.encode_image(images)
+                    normalized_features = image_features / image_features.norm(dim=-1, keepdim=True)
+                    embeddings.extend(normalized_features.cpu().numpy().tolist())
+                    
         return embeddings
+    
+    def embed_text(self, text):
+        text = self.tokenizer(text)
+        with torch.no_grad():
+                text_features = self.model.encode_text(text)
+                text_features /= text_features.norm(dim=-1, keepdim=True)
+        
+        return text_features.cpu().numpy().tolist()
+

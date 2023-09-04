@@ -25,57 +25,75 @@ const Search: FC = () => {
     // }
   ]);
   
-  const { data, setData } = useData();
+  const { data, setData, inputText } = useData();
 
-useEffect(() => {
-  if (data) {
-    console.log(data)
-    axios.post('http://192.168.0.22:8000/query', {
-      query_texts: [data.filename],
-    })
-    .then(response => {
-      console.log('Success:', response.data);
-      
-      const metadatas = response.data.metadatas[0];
-      const distances = response.data.distances[0];
-      
-      // Combine metadatas and distances
-      const combined = metadatas.map((metadata:any, index: any) => {
-        return {
-          ...metadata,
-          distance: distances[index]
-        }
-      });
-
-      // Sort combined array based on distance
-      const sorted = combined.sort((a: any, b:any) => a.distance - b.distance);
-      
-      const results = sorted.map((item: any) => {
-        return {
-          galleryName: item['Gallery Name'],
-          title: item.Name,
-          artistName: item.Artist,
-          img_src: item['Image URL'],
-          date: 'Test date',
-          price: item.Price,
-          url: item.Href
-        }
-      });
+  const processApiResponse = (response: any) => {
+    const metadatas = response.metadatas[0];
+    const distances = response.distances[0];
     
-      setResults(results);
-    })
-    .catch(error => {
-      console.error('Error:', error);
+    // Combine metadatas and distances
+    const combined = metadatas.map((metadata: any, index: number) => {
+      return {
+        ...metadata,
+        distance: distances[index]
+      }
     });
-  }
-}, [data]);
+  
+    // Sort combined array based on distance
+    const sorted = combined.sort((a: any, b: any) => a.distance - b.distance);
+  
+    const mappedResults = sorted.map((item: any) => {
+      return {
+        galleryName: item['Gallery Name'],
+        title: item.Name,
+        artistName: item.Artist,
+        img_src: item['Image URL'],
+        date: 'Test date',
+        price: item.Price,
+        url: item.Href
+      }
+    });
+  
+    return mappedResults;
+  };
+  
+
+  useEffect(() => {
+    if (data) {
+      axios.post('http://192.168.0.22:8000/query', {
+        query_texts: [data.filename],
+      })
+      .then(response => {
+        const mappedResults = processApiResponse(response.data);
+        setResults(mappedResults);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  }, [data]);
+  
+  useEffect(() => {
+    if (inputText) {
+      axios.post('http://192.168.0.22:8000/text-query', {
+        query_text: inputText,
+      })
+      .then(response => {
+        const mappedResults = processApiResponse(response.data);
+        setResults(mappedResults);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  }, [inputText]);
+  
   
   return (
     <div>
-      <Box width="100%" display="flex" alignItems="flex-end">
-      <ImageUploadWithDataContext />
+      <Box style={{width:"100%"}} display="flex" justifyContent="center" alignItems="center">
+        <ImageUploadWithDataContext />
       </Box>
-      <Separator borderWidth={1} my={1} as="hr" width="100%" color="black10" />
 
       <Spacer y={30} />
       <ResultsView results={results} />
