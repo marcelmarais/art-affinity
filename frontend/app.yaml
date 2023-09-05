@@ -1,0 +1,17 @@
+runtime: nodejs14  # Use the latest supported Node.js version.
+
+instance_class: F2
+
+
+env_variables:
+  NODE_ENV: 'production'
+
+entrypoint: npm start
+
+handlers:
+- url: /static
+  static_dir: build/static
+
+- url: /.*
+  static_files: build/index.html
+  upload: build/index.html
