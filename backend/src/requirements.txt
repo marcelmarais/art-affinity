@@ -16,6 +16,7 @@ chroma-hnswlib
 chromadb
 click==8.1.6
 colorama
+pysqlite3-binary
 coloredlogs==15.0.1
 cryptography
 Cython
