@@ -1,11 +1,11 @@
 from scraper.image_downloader import download_images
 from database.chroma_embedding_function import CLIPEmbeddingFunction
 import chromadb
-from config.constants import SCRAPED_CSV_SAVE_PATH, IMAGES_SAVE_PATH, BACKEND_IP
+from config.constants import SCRAPED_CSV_SAVE_PATH, IMAGES_SAVE_PATH, CHROMA_DB_IP
 from config.utils import csv_to_dict_list, convert_images_to_base64
 class Ingest:
   def __init__(self):
-      self.client = chromadb.HttpClient(host=BACKEND_IP, port=8000)
+      self.client = chromadb.HttpClient(host=CHROMA_DB_IP, port=8000)
       self.collection = self.client.get_or_create_collection(name="all_art", embedding_function=CLIPEmbeddingFunction(), metadata={"hnsw:space": "cosine"})
 
   def start_image_download(self):

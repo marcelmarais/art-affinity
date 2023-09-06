@@ -60,7 +60,7 @@ const Search: FC = () => {
 
   useEffect(() => {
     if (data) {
-      axios.post('http://192.168.0.22:8000/query', {
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/query`, {
         query_texts: [data.filename],
       })
       .then(response => {
@@ -75,7 +75,7 @@ const Search: FC = () => {
   
   useEffect(() => {
     if (inputText) {
-      axios.post('http://192.168.0.22:8000/text-query', {
+      axios.post(`${process.env.REACT_APP_BACKEND_URL}/text-query`, {
         query_text: inputText,
       })
       .then(response => {

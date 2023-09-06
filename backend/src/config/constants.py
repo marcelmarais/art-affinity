@@ -5,5 +5,5 @@ IMAGES_UPLOAD_PATH = '/tmp/image_uploads'
 SCRAPED_CSV_SAVE_PATH = 'data/art_details.csv'
 
 '''CONFIG'''
-BACKEND_IP = '35.246.116.138'
+CHROMA_DB_IP = '35.214.21.74'
 DEV = True

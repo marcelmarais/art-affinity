@@ -54,7 +54,7 @@ class ImageUpload extends React.Component<Props, State> {
       const formData = new FormData();
       formData.append('image', this.selectedFile);
   
-      fetch('http://192.168.0.22:8000/upload-image', {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/upload-image`, {
         method: 'POST',
         body: formData,
       })
