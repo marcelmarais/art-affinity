@@ -54,7 +54,7 @@ class ArtsyScraper:
                     image_url = None
                 
                 # Compute hash of the scraped details
-                hash_id = hashlib.md5((name + price + artist + gallery_name + href).encode()).hexdigest()
+                hash_id = hashlib.md5((name + artist + gallery_name + href).encode()).hexdigest()
 
                 art_details.append({
                     'ID': hash_id,
@@ -101,10 +101,14 @@ class ArtsyScraper:
 # gallery_slug = 'worldart'
 gallery_slug = 'smac'
 artsy_url = 'https://www.artsy.net/partner'
-base_url = f'{artsy_url}/{gallery_slug}/works?page='
+artsy_url = 'https://www.artsy.net/collect'
+pagination = '?page='
+# base_url = f'{artsy_url}/{gallery_slug}/works'
+base_url = artsy_url
+base_url = f'{base_url}{pagination}'
 scraper = ArtsyScraper(base_url)
 
-for page in range(1, 200):
+for page in range(70, 200):
     try:
         art_details = scraper.get_art_details(page)
         if not art_details:
