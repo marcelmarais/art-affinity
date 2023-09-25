@@ -36,7 +36,6 @@ class OpenClipModel:
         """
         embeddings = []
         batch_size = 256
-        print(images_base64)
         # Preprocess images in parallel and process in batches
         with ThreadPoolExecutor() as executor:
             for i in tqdm(range(0, len(images_base64), batch_size)):

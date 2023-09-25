@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Box, CSSGrid, Spacer } from "@artsy/palette"
 import ArtCard, { ArtCardProps } from './ArtCard';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const ResponsiveGrid = styled(CSSGrid)`
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -11,6 +11,22 @@ const ResponsiveGrid = styled(CSSGrid)`
   }
 `;
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
+
+const AnimatedLink = styled.a<{ delay: number }>`
+  text-decoration: none;
+  color: inherit;
+  opacity: 0;
+  animation: ${fadeIn} 0.3s ${props => props.delay}s forwards;
+`;
 interface ResultsViewProps {
   results: ArtCardProps[];
 }
@@ -23,19 +39,20 @@ const ResultsView: FC<ResultsViewProps> = ({ results }) => {
         justifyItems="center"
         gridGap={30}
       >
-        {results.map((result, index) => (
-          <a 
-          href={result.url} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          style={{ textDecoration: 'none', color: 'inherit' }} 
-          key={index}
-        >          
-          <Box width = {230} key={index}>
+      {results.map((result, index) => (
+      <AnimatedLink
+      href={result.url} 
+      target="_blank" 
+      rel="noopener noreferrer"
+      delay={index * 0.2}
+      key={index}
+      >          
+          <Box width={230} key={index}>
             <ArtCard {...result} />
           </Box>
-          </a>
-        ))}
+        </AnimatedLink>
+      ))}
+
       </ResponsiveGrid>
     </Box>
   );

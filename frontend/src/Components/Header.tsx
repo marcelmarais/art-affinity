@@ -24,7 +24,7 @@ const Header: React.FC = () => {
     <HeaderContainer>
       <div className="textWrapper">
         <div>
-          <Text variant="xl">ArtAffinity.ai</Text>
+          <Text variant="xl">ArtAffinity</Text>
           <Spacer y={0.1} />
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Text variant="s" style={{ marginRight: '-15px' }}>Powered by</Text>

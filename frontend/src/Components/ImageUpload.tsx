@@ -64,8 +64,8 @@ class ImageUpload extends React.Component<Props, State> {
         this.setState({ imageUploaded: true });
       })
       .catch(error => {
+        alert(error);
         console.error(error);
-        // Handle the error
       });
     }
   };
@@ -93,7 +93,7 @@ class ImageUpload extends React.Component<Props, State> {
           ref={this.fileInputRef}
           type="file"
           accept="image/*"
-          capture={true}
+          capture="user"
           onChange={this.handleImageUpload}
           style={{ display: 'none' }}
         />
@@ -118,11 +118,11 @@ class ImageUpload extends React.Component<Props, State> {
           display="flex" 
           alignItems="center" 
           flexDirection="center"
-          style={{ border: "1px solid black", borderRadius: "20px", padding: "5px", width: "100%"}} 
+          style={{ border: "1px solid black", borderRadius: "40px", padding: "5px", width: "100%"}} 
         >
         <Input 
         placeholder="Search for an artwork…"
-        style={{ width: "90%", borderBottom: "none" }}
+        style={{ width: "80%",height: "40px", marginLeft: "10px", borderBottom: "none" }}
         value={localInputValue}  
         onChange={this.handleInputChange}
         onKeyPress={this.handleInputKeyPress}
@@ -135,8 +135,6 @@ class ImageUpload extends React.Component<Props, State> {
         </Box>            
         </Box>
         
-        {/* ... (rest of the render method remains unchanged) */}
-
       </Box>
     );
   }
