@@ -99,7 +99,6 @@ const Search: FC = () => {
           position: 'absolute', 
           top: '50%', 
           left: '50%', 
-          transform: 'translate(-50%, -4000%)', // Adjusting the -70% to move it slightly above center
           zIndex: 10
         }}>
           <Spinner position="static" delay={0} size="large" color="brand" />

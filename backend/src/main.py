@@ -14,6 +14,8 @@ from PIL import Image, UnidentifiedImageError
 setup_dirs()  # Create directories for image uploads
 app = FastAPI()
 
+base64_dict = {}
+
 if DEV:
     from fastapi.middleware.cors import CORSMiddleware
 
@@ -38,7 +40,8 @@ class TextQuery(BaseModel):
 # POST route for queries
 @app.post("/query")
 async def run_query(query: Query):
-    query_texts = [str(query_text) for query_text in query.query_texts]
+    print("here")
+    query_texts = [str(base64_dict.get(query_text)) for query_text in query.query_texts]
     results = chroma_instance.collection.query(
         query_texts=query_texts,
         n_results=query.n_results,
@@ -66,9 +69,14 @@ async def upload_image(image: UploadFile = File(...)):
     image_path = Path(path_str)
     with image_path.open("wb") as buffer:
         shutil.copyfileobj(image.file, buffer)
+
+    base64_string = convert_images_to_base64([path_str])[0]
+    image_id = str(timestamp)
+    base64_dict[image_id] = base64_string
     
-    filename = convert_images_to_base64([path_str])[0]
-    return {"filename": filename}
+
+    
+    return {"filename": image_id}
 
 
 

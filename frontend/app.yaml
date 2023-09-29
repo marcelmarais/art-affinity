@@ -9,6 +9,10 @@ env_variables:
 entrypoint: npm start
 
 handlers:
+- url: /favicon\.ico
+  static_files: public/favicon.ico
+  upload: public/favicon\.ico
+  
 - url: /static
   static_dir: build/static
 
