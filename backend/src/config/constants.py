@@ -6,4 +6,4 @@ SCRAPED_CSV_SAVE_PATH = 'data/art_details.csv'
 
 '''CONFIG'''
 CHROMA_DB_IP = '35.214.21.74'
-DEV = False
+DEV = True

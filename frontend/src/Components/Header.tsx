@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ModalDialogContent, Flex, CSSGrid, Separator, Spacer, Text, Button } from "@artsy/palette";
+import { ModalDialogContent, Separator, Spacer, Text, Button } from "@artsy/palette";
 import ArtsyLogoIcon from "@artsy/icons/ArtsyLogoIcon";
-import InfoIcon from "@artsy/icons/InfoIcon";
 import Modal from './Modal';
+import ModalContent from './ModalContent';
+
 const HeaderContainer = styled.div`
   position: sticky;
   top: 0;
@@ -17,8 +18,12 @@ const HeaderContainer = styled.div`
   }
 `;
 
-
 const Header: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleModalToggle = () => {
+    setIsModalOpen(!isModalOpen);
+  };
 
   return (
     <HeaderContainer>
@@ -31,10 +36,18 @@ const Header: React.FC = () => {
             <ArtsyLogoIcon height="25px" />
           </div>
         </div>
+        <Button onClick={handleModalToggle}>About</Button>
       </div>
       <Separator borderWidth={1} my={1} as="hr" width="100%" color="black10" />
-
-    
+      {isModalOpen && (
+        <Modal>
+          <div>
+            <ModalDialogContent onClose={handleModalToggle}>
+            <ModalContent/>
+            </ModalDialogContent>
+          </div>
+        </Modal>
+      )}
     </HeaderContainer>
   );
 };

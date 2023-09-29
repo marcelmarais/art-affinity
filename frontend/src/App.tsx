@@ -4,19 +4,28 @@ import Search from './ResultsView';
 import Header from './Components/Header';
 import { Theme, injectGlobalStyles } from "@artsy/palette"
 import { DataProvider } from './Context/DataContext';
+import styled from 'styled-components';
 
 const { GlobalStyles } = injectGlobalStyles(`
   // overrides and additions
 `);
 
+const MainContainer = styled.div`
+  overflow-y: auto;
+  height: 100vh;  // or any other height that fits your design
+`;
+
+
 const App: React.FC = () => {
   return (
-    <DataProvider>
-      <Theme>
-        <Header />
-        <Search />
-      </Theme>
-  </DataProvider>
+    <MainContainer>
+      <DataProvider>
+        <Theme>
+          <Header />
+          <Search />
+        </Theme>
+    </DataProvider>
+    </MainContainer>
     
   );
 }
