@@ -5,8 +5,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://artaffinity.xyz/">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+  <a href="https://artaffinity.xyz/"  target="_blank">
+    <img src="images/logo.png" alt="Logo">
   </a>
 
 <h3 align="center">Art Affinity</h3>
@@ -17,48 +17,19 @@
     <a href="https://artaffinity.xyz" target="_blank"><strong>View Demo »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">Medium</a>
+<!--     <a href="https://github.com/github_username/repo_name">Medium</a> -->
     ·
-    <a href="https://github.com/github_username/repo_name/issues">LinkedIn</a>
+    <a href="https://www.linkedin.com/in/marcel-marais-599095175/"  target="_blank">LinkedIn</a>
   </p>
 </div>
 
 
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## About
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+Art Affinity is an AI powered search engine that allows you to search for art using images and text. The search focuses on the actual content of artworks and **not** keywords or meta tags.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -69,6 +40,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 * [![React][React.js]][React-url]
 * [![FastAPI][FastAPI]][FastAPI-url]
 * [![PyTorch][PyTorch]][PyTorch-url]
+* [![Docker][Docker]][Docker-url]
 
 
 
@@ -79,34 +51,50 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Both the backend and frontend are in this repo, so to get a local version running you only need to clone this repo.
+```sh
+git clone https://github.com/marcelmarais/art-affinity.git
+```
 
-### Prerequisites
+### Setup
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
+#### Backend
+
+The vector database the powers embedding search is [ChromaDB](https://www.trychroma.com/). This needs to run separately from the main backend. You need to set the url / ip address to your chroma instance in the following environment variable:
+```sh
+export CHROMA_DB_URL="your_chroma_instace"
+```
+
+#### Data Ingestion
+
+All data is scraped from [Artsy's](https://www.artsy.net/) partner sites (mostly galleries), for example: [99 Loop Gallery](https://www.artsy.net/partner/99-loop-gallery). This code does not need to be run in a Docker container as it has fewer potential conflicts. To scrape first identify the gallery slug on [Artsy](https://www.artsy.net/) and then run:
+
+```
+cd backend
+python -m venv venv
+source venv/bin/activate
+cd src
+pip install -r requirements.txt
+python scraper/artsty_scraper.py
+
+```
+
+The backend is mainly built with FastAPI and Pytorch. To ensure compatibility you should run everything from the docker container:
+
   ```sh
-  npm install npm@latest -g
+  cd backend
+  ./buildDocker.sh
+  ./runDocker.sh
   ```
 
-### Installation
+#### Frontend
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/github_username/repo_name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+The frontend was created using create-react-app. The design system used is from [Arsty](https://github.com/artsy) - it's called [palette](https://github.com/artsy/palette). To run the development server:
+```sh
+cd frontend
+npm install
+npm start
+```
 
 
 
@@ -114,42 +102,6 @@ This is an example of how to list things you need to use the software and how to
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -165,9 +117,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
+Marcel Marais -> marcelmarais2000@gmail.com | [marcelmarais.github.io](marcelmarais.github.io) | [Linkedin](https://www.linkedin.com/in/marcel-marais-599095175/)
 
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/marcelmarais/art-affinity](https://github.com/marcelmarais/art-affinity)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -176,9 +128,7 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+Thanks to [Artsy](https://www.artsy.net/) for their design system and for great open engineering in general!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -206,3 +156,5 @@ Project Link: [https://github.com/github_username/repo_name](https://github.com/
 [FastAPI-url]: https://fastapi.tiangolo.com/
 [PyTorch]: https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white
 [PyTorch-url]: https://pytorch.org/
+[Docker]: https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
