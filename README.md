@@ -27,9 +27,12 @@
 <!-- ABOUT THE PROJECT -->
 ## About
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
 Art Affinity is an AI powered search engine that allows you to search for art using images and text. The search focuses on the actual content of artworks and **not** keywords or meta tags.
+
+
+https://github.com/marcelmarais/art-affinity/assets/37986581/0c706feb-55c2-4d00-961d-77243b95f371
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
