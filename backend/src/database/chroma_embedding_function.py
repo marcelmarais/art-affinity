@@ -2,6 +2,7 @@
 from chromadb import Documents, EmbeddingFunction, Embeddings
 from model.open_clip import OpenClipModel
 
+
 class CLIPEmbeddingFunction(EmbeddingFunction):
     def __init__(self) -> None:
         self.embedding_model = OpenClipModel()
@@ -12,4 +13,3 @@ class CLIPEmbeddingFunction(EmbeddingFunction):
 
     def __call__(self, texts: Documents) -> Embeddings:
         return self.embedding_function_images(texts)
-    

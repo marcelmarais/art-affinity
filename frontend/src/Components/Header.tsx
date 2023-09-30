@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { ModalDialogContent, Separator, Spacer, Text, Button } from "@artsy/palette";
+import React, { useState } from "react";
+import styled from "styled-components";
+import {
+  ModalDialogContent,
+  Separator,
+  Spacer,
+  Text,
+  Button,
+} from "@artsy/palette";
 import ArtsyLogoIcon from "@artsy/icons/ArtsyLogoIcon";
-import Modal from './Modal';
-import ModalContent from './ModalContent';
+import Modal from "./Modal";
+import ModalContent from "./ModalContent";
 
 const HeaderContainer = styled.div`
   position: sticky;
@@ -31,8 +37,10 @@ const Header: React.FC = () => {
         <div>
           <Text variant="xl">ArtAffinity</Text>
           <Spacer y={0.1} />
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Text variant="s" style={{ marginRight: '-15px' }}>Powered by</Text>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Text variant="s" style={{ marginRight: "-15px" }}>
+              Powered by
+            </Text>
             <ArtsyLogoIcon height="25px" />
           </div>
         </div>
@@ -43,7 +51,7 @@ const Header: React.FC = () => {
         <Modal>
           <div>
             <ModalDialogContent onClose={handleModalToggle}>
-            <ModalContent/>
+              <ModalContent />
             </ModalDialogContent>
           </div>
         </Modal>

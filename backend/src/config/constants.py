@@ -7,3 +7,6 @@ SCRAPED_CSV_SAVE_PATH = 'data/art_details.csv'
 '''CONFIG'''
 CHROMA_DB_IP = '35.214.21.74'
 DEV = True
+
+'''SCRAPING'''
+PAGE_MAX = 200  # Max number of pages to scrape per gallery

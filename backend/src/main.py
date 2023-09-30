@@ -1,17 +1,18 @@
-__import__('pysqlite3')
-import sys
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-from fastapi import FastAPI, Request, File, UploadFile
-from pydantic import BaseModel
-from typing import List, Optional
-from database.chroma_interface import ChromaInstance
-from config.constants import DEV, IMAGES_UPLOAD_PATH
-from config.utils import setup_dirs, convert_images_to_base64
-import shutil
-from pathlib import Path
-import time
 from PIL import Image, UnidentifiedImageError
-setup_dirs()  # Create directories for image uploads
+import time
+from pathlib import Path
+import shutil
+from config.utils import setup_dirs, convert_images_to_base64
+from config.constants import DEV, IMAGES_UPLOAD_PATH
+from database.chroma_interface import ChromaInstance
+from typing import List, Optional
+from pydantic import BaseModel
+from fastapi import FastAPI, Request, File, UploadFile
+import sys
+__import__('pysqlite3')
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3') # Hack needed to work with Linux / GCP containers
+
+setup_dirs()
 app = FastAPI()
 
 base64_dict = {}
@@ -29,37 +30,45 @@ if DEV:
     )
 
 chroma_instance = ChromaInstance()
+
+
 class Query(BaseModel):
     query_texts: List[str]
     n_results: Optional[int] = 50
+
 
 class TextQuery(BaseModel):
     query_text: str
     n_results: Optional[int] = 50
 
-# POST route for queries
+
 @app.post("/query")
 async def run_query(query: Query):
     print("here")
-    query_texts = [str(base64_dict.get(query_text)) for query_text in query.query_texts]
+    query_texts = [str(base64_dict.get(query_text))
+                   for query_text in query.query_texts]
     results = chroma_instance.collection.query(
         query_texts=query_texts,
         n_results=query.n_results,
-        include=["metadatas","distances"]
+        include=["metadatas", "distances"]
     )
     return results
 
+
 @app.post("/text-query")
 async def run_text_query(query: TextQuery):
-    text_embedding = chroma_instance.embedding_function.embed_text(query.query_text)
+    text_embedding = chroma_instance.embedding_function.embed_text(
+        query.query_text)
     results = chroma_instance.collection.query(
         query_embeddings=text_embedding,
         n_results=query.n_results,
-        include=["metadatas","distances"]
+        include=["metadatas", "distances"]
     )
     return results
 
 # POST route for image uploads
+
+
 @app.post("/upload-image")
 async def upload_image(image: UploadFile = File(...)):
     timestamp = int(time.time())
@@ -73,11 +82,8 @@ async def upload_image(image: UploadFile = File(...)):
     base64_string = convert_images_to_base64([path_str])[0]
     image_id = str(timestamp)
     base64_dict[image_id] = base64_string
-    
 
-    
     return {"filename": image_id}
-
 
 
 if __name__ == "__main__":
