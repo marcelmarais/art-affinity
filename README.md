@@ -1,12 +1,11 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
 <a name="readme-top"></a>
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://artaffinity.xyz/"  target="_blank">
-    <img src="images/logo.png" alt="Logo">
+    <img src="https://github.com/marcelmarais/art-affinity/assets/37986581/52465e96-6ef8-40e7-a8ec-2da9d69ab72b" alt="Logo">
   </a>
 
 <h3 align="center">Art Affinity</h3>
