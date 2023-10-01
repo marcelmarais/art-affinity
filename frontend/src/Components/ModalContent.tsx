@@ -32,29 +32,24 @@ const ModalContent: FC<Props> = (props) => {
         What is ArtAffinity?
       </Text>
       <Text variant="sm" mb={1} mt={1}>
-        ArtAffinity is an AI tool that allows you to find new art that is
-        similar to pieces you already like. Simply upload an image of a piece of
-        art you like, press the search icon, and ArtAffinity will find new
-        pieces for you.
+        Art Affinity is an AI first search engine that empowers you to find new works based
+        on the actual content of the piece rather than key words or meta tags. This means
+        you can search using natural language, including emotions, styles and historical artists. Try: <i>"feelings of inner turmoil"</i>.
       </Text>
       <Text variant="sm" color="black100" fontWeight="bold" mt={1}>
         How can I find out more?
       </Text>
       <Text variant="sm" mb={1}>
-        You can read about the technical details of ArtAffinity in the{" "}
-        <StyledA href="https://medium.com" rel="noreferrer" target="_blank">
-          article
-        </StyledA>{" "}
-        I wrote about it. If you have any questions, or want to see your gallery
+        I am currently writing more about how I built this and the problem I think it solves.
+        If you have any questions in the interim, or want to see your gallery
         added feel free to{" "}
         <StyledA
-          href="https://marcelmarais.github.io/contact"
+          href="https://www.linkedin.com/in/marcel-marais-599095175/"
           rel="noreferrer"
           target="_blank"
         >
-          contact me
+          contact me on Linkedin.
         </StyledA>
-        .
       </Text>
     </Box>
   );

@@ -103,7 +103,7 @@ class ImageUpload extends React.Component<Props, State> {
           ref={this.fileInputRef}
           type="file"
           accept="image/*"
-          capture="user"
+          capture="environment"
           onChange={this.handleImageUpload}
           style={{ display: "none" }}
         />
