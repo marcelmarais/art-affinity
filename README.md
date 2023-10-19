@@ -13,7 +13,7 @@
   <p align="center">
     Art Affinity is your AI tool for finding art you love.
     <br />
-    <a href="https://artaffinity.xyz" target="_blank"><strong>View Demo »</strong></a>
+    <a href="https://artaffinity.xyz" target="_blank"><strong>Live Demo »</strong></a>
     <br />
     <br />
     <a href="https://medium.com/@marcelmarais2000/discovering-art-in-the-age-of-ai-175d31960e4">Medium</a>
