@@ -16,7 +16,7 @@
     <a href="https://artaffinity.xyz" target="_blank"><strong>View Demo »</strong></a>
     <br />
     <br />
-<!--     <a href="https://github.com/github_username/repo_name">Medium</a> -->
+    <a href="https://medium.com/@marcelmarais2000/discovering-art-in-the-age-of-ai-175d31960e4">Medium</a>
     ·
     <a href="https://www.linkedin.com/in/marcel-marais-599095175/"  target="_blank">LinkedIn</a>
   </p>
@@ -97,15 +97,6 @@ cd frontend
 npm install
 npm start
 ```
-
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-
 
 <!-- LICENSE -->
 ## License
